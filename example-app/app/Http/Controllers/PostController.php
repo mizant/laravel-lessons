@@ -12,51 +12,56 @@ class PostController extends Controller
 
 {
 
-    public function index() {
-      $posts = Post::all();
-
-      $post = Post::find(1);
-      $tag = Tag::find(1);
-      dd($tag->posts);
-
-
-//      return view('post.index', compact('posts'));
+    public function index()
+    {
+        $posts = Post::all();
+        return view('post.index', compact('posts'));
     }
 
-    public function main() {
+    public function main()
+    {
         return view('about');
     }
 
 
-public function create() {
-    return view('post.create');
-}
+    public function create()
+    {
+        $categories = Category::all();
+        return view('post.create', compact('categories'));
+    }
 
-public function store() {
-   $data = request()->validate([
-       'title' => 'string',
-       'content' => 'string',
-       'image' => 'string',
+    public function store()
+    {
+        $data = request()->validate([
+            'title' => 'string',
+            'content' => 'string',
+            'image' => 'string',
+            'category_id' => '',
 
-   ]);
-   Post::create($data);
-   return redirect()->route('post.index');
-}
+        ]);
+        Post::create($data);
+        return redirect()->route('post.index');
+    }
 
-public function show(Post $post) {
+    public function show(Post $post)
+    {
         return view('post.show', compact('post'));
-}
+    }
 
-public function edit(Post $post) {
-return view('post.edit', compact('post'));
-}
+    public function edit(Post $post)
+    {
+        $categories = Category::all();
+        return view('post.edit', compact('post', 'categories'));
+    }
 
-    public function update( Post $post) {
+    public function update(Post $post)
+    {
 
         $data = request()->validate([
             'title' => 'string',
             'content' => 'string',
             'image' => 'string',
+            'category_id' => '',
 
         ]);
 
@@ -71,12 +76,14 @@ return view('post.edit', compact('post'));
         dd('deleted');
     }
 
-    public function destroy( Post $post) {
+    public function destroy(Post $post)
+    {
         $post->delete();
         return redirect()->route('post.index');
     }
 
-    public function firstOrCreate() {
+    public function firstOrCreate()
+    {
         $post = Post::find(1);
         $anotherPost = [
             'title' => 'some post',
@@ -86,9 +93,9 @@ return view('post.edit', compact('post'));
             'is_published' => 1,
         ];
 
-       $post = Post::firstOrCreate([
+        $post = Post::firstOrCreate([
             'title' => 'title some phpstorm'
-        ],[
+        ], [
             'title' => 'title some phpstorm',
             'content' => 'some content',
             'image' => 'image1.jpg',
@@ -96,13 +103,14 @@ return view('post.edit', compact('post'));
             'is_published' => 1,
         ]);
         dump($post->content);
-       dd('finished');
+        dd('finished');
     }
 
-    public function updateOrCreate(){
+    public function updateOrCreate()
+    {
         $post = Post::updateOrCreate([
             'title' => 'its new title'
-        ],[
+        ], [
             'title' => 'title update new',
             'content' => 'its new updated content',
             'image' => 'image1.jpg',

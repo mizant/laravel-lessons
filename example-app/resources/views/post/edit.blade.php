@@ -17,6 +17,20 @@
                 <label for="image" class="form-label">image</label>
                 <input type="text" class="form-control" name="image" id="image" aria-describedby="image" value="{{$post->image}}">
             </div>
+
+            <div class="form-group mb-3">
+                <label for="category">Category</label>
+                <select class="form-control" id="category" name="category_id">
+                    @foreach($categories as $category)
+
+                        <option
+                            {{$category->id == $post->category->id ? 'selected' : ''}}
+                            value="{{$category->id}}">{{$category->title}}</option>
+                    @endforeach
+
+                </select>
+            </div>
+
             <button type="submit" class="btn btn-primary">Обновить</button>
         </form>
     </div>
