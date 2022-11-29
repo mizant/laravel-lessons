@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Post;
-use App\Models\PostTag;
 use App\Models\Tag;
 
 
@@ -15,7 +14,9 @@ class PostController extends Controller
 
     public function index()
     {
-        $posts = Post::all();
+        $post = Post::find(1);
+        $category = Category::find(1);
+        $tag = Tag::find(1);
         return view('post.index', compact('posts'));
     }
 
@@ -35,7 +36,7 @@ class PostController extends Controller
     public function store()
     {
         $data = request()->validate([
-            'title' => 'string',
+            'title' => 'required|string',
             'content' => 'string',
             'image' => 'string',
             'category_id' => '',
